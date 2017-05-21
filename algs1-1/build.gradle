@@ -1,0 +1,7 @@
+runPercolationStats {
+    args 200, 100
+}
+
+runPercolationVisualizer {
+    args "resources/sedgewick60.txt"
+}

@@ -1,0 +1,37 @@
+allprojects {
+    apply plugin: "idea"
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.8
+
+    repositories {
+        mavenCentral()
+        maven { url 'https://dl.bintray.com/algs4/maven' }
+    }
+
+    dependencies {
+        compile 'edu.princeton.cs:algs4:1.0.2'
+    }
+
+    sourceSets {
+        main.java.srcDirs = ["src"]
+        test.java.srcDirs = ["test"]
+    }
+
+    tasks.addRule("Pattern: run<ClassName>") { taskName ->
+        if (taskName.startsWith("run")) {
+            task(taskName, type: JavaExec) {
+                main = taskName.substring(3)
+                if (System.getProperty("args")) {
+                    gradle.projectsEvaluated {
+                        args = System.getProperty("args").split(",") as List
+                    }
+                }
+                classpath = sourceSets.test.runtimeClasspath
+            }
+        }
+    }
+}
